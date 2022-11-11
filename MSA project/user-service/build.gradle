@@ -41,6 +41,18 @@ dependencies {
 	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
 
 	implementation("com.auth0:java-jwt:3.10.3")
+
+	// https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-config
+	implementation 'org.springframework.cloud:spring-cloud-starter-config'
+
+	// https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-bootstrap
+	implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
+
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+
+
+
 }
 
 dependencyManagement {
