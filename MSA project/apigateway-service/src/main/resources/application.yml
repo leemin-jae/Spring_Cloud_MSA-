@@ -18,6 +18,12 @@ spring:
           - Path=/user-service/**
 #          - Method=POST
         filters:
-#          - RemoveRequestHeader=Cookie
+          - RemoveRequestHeader=Cookie
           - RewritePath=/user-service/(?<path>.*),/$\{path}
+
+
+jwt:
+  secret: dyAeHubOOc8KaOfYB6XEQoEj1QzRlVgtjNL8PYs1A1tymZvvqkcEU7L1imkKHeDa
+  expiration: 1296000000
+
 
