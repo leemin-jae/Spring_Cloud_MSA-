@@ -20,10 +20,19 @@ spring:
         filters:
           - RemoveRequestHeader=Cookie
           - RewritePath=/user-service/(?<path>.*),/$\{path}
+      - id: business-service
+        uri: lb://BUSINESS-SERVICE
+        predicates:
+          - Path=/business-service/**
+        filters:
+          - RemoveRequestHeader=Cookie
+          - RewritePath=/business-service/(?<path>.*),/$\{path}
+          - AuthorizationHeaderFilter
 
 
 jwt:
   secret: dyAeHubOOc8KaOfYB6XEQoEj1QzRlVgtjNL8PYs1A1tymZvvqkcEU7L1imkKHeDa
   expiration: 1296000000
+
 
 

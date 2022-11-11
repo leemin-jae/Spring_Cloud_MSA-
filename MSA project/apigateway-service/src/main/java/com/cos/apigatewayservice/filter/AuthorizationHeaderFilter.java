@@ -1,5 +1,8 @@
 package com.cos.apigatewayservice.filter;
 
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.cos.apigatewayservice.util.JwtTokenUtil;
 import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -32,8 +35,10 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
                 return onError(exchange, "no authorization header", HttpStatus.UNAUTHORIZED);
             }
 
-            String authorizationHeader = request.getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
-            String jwt = authorizationHeader.replace("Bearer ", "");
+            String jwt = request.getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
+            //String jwt = authorizationHeader.replace("Bearer ", "");
+
+            log.info("jwt : {} ",jwt);
 
             if(!isJwtValid(jwt)){
                 return onError(exchange,"JWT token is not valid", HttpStatus.UNAUTHORIZED);
@@ -56,14 +61,17 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
 
         String subject = null;
         try {
-            subject = Jwts.parser().setSigningKey(env.getProperty("token.secret"))
-                    .parseClaimsJws(jwt).getBody()
-                    .getSubject();
+//            subject = Jwts.parser().setSigningKey(env.getProperty("token.secret"))
+//                    .parseClaimsJws(jwt).getBody()
+//                    .getSubject();
+            subject = JwtTokenUtil.getUserId(jwt);
         }catch (Exception ex){
+            log.info("exception 에러 발생");
             returnValue = false;
         }
 
         if(subject == null || subject.isEmpty()){
+            log.info("subject null or isEnpty");
             returnValue = false;
         }
 
