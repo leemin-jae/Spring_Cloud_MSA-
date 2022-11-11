@@ -1,5 +1,5 @@
 server:
-  port: 0
+  port: 2000
   address: 0.0.0.0
   servlet:
     context-path: /
@@ -29,6 +29,29 @@ spring:
     hikari:
       username: c103
       password: "!c103finalproject"
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: 9acb3e1fec7d5dcfa3a8577c21d604da
+            client-secret: UQmeiRtYD5EyWqsQwI91DV6dpCUfmD8n
+            client-authentication-method: post
+            redirect-uri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
+            authorization-grant-type: authorization_code
+            scope:
+              - profile_nickname
+              - account_email
+              - gender
+              - profile_image
+            client-name: Kakao
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+
 
 eureka:
   instance:
@@ -38,4 +61,12 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://127.0.0.1:8761/eureka
+
+
+
+#unit is ms. 15 * 24 * 60 * 60 * 1000 = 15days
+jwt:
+  secret: dyAeHubOOc8KaOfYB6XEQoEj1QzRlVgtjNL8PYs1A1tymZvvqkcEU7L1imkKHeDa
+  expiration: 1296000000
+
 
