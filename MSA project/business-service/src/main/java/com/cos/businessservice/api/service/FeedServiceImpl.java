@@ -13,7 +13,6 @@ import java.util.List;
 
 @Service
 public class FeedServiceImpl implements FeedService{
-
     @Autowired
     DogRepository dogRepository;
 

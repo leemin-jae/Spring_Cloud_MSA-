@@ -24,7 +24,7 @@ import java.util.List;
 @Api(value = "dog API" , tags = {"dog"})
 @Slf4j
 @RestController
-@RequestMapping("/api/dog")
+@RequestMapping("/dog")
 public class DogController {
 
     @Autowired
@@ -35,8 +35,10 @@ public class DogController {
 
     @PostMapping()
     @ApiOperation(value = "강아지 등록하기",notes = "ntf 발행된 해쉬와 사진 주소로 강아지 등록",response = dogPostResponse.class)
-    public ResponseEntity<?> registerDog(@RequestHeader(JwtTokenUtil.HEADER_STRING) String authentication, @RequestBody dogPostRequest dog){
+    public ResponseEntity<?> registerDog(@RequestHeader(JwtTokenUtil.HEADER_STRING) String authentication
+            , @RequestBody dogPostRequest dog){
         try {
+
             User user = userService.getUserByUserId(JwtTokenUtil.getUserId(authentication));
 
 
@@ -55,11 +57,11 @@ public class DogController {
 
     @GetMapping("")
     @ApiOperation(value = "등록된 강아지 확인하기",notes = "본인 강아지 확인하기",response = dogPostResponse.class)
-    public ResponseEntity<?> getDogList(@RequestHeader(JwtTokenUtil.HEADER_STRING) String authentication){
+    public ResponseEntity<?> getDogList(@RequestHeader(JwtTokenUtil.HEADER_STRING) String authentication
+    ){
         try {
-            log.info("getDogList");
             User user = userService.getUserByUserId(JwtTokenUtil.getUserId(authentication));
-            log.info("userId : {} " , user.getUserId());
+
 
             if (user == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(BaseResponseBody.of(400, "유저 없음"));
@@ -141,7 +143,6 @@ public class DogController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(BaseResponseBody.of(500, "서버 오류"));
         }
     }
-
 
 
 }

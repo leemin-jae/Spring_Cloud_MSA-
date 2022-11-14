@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +23,7 @@ import java.util.List;
 @Api(value = "Memo API" , tags = {"Memo"})
 @Slf4j
 @RestController
-@RequestMapping("/api/memo")
+@RequestMapping("/memo")
 public class MemoController {
 
     @Autowired
@@ -38,6 +37,7 @@ public class MemoController {
     public ResponseEntity<?> registerMemo(@RequestHeader(JwtTokenUtil.HEADER_STRING) String authentication, @RequestBody MemoPostRequest memoReq){
         try {
             User user = userService.getUserByUserId(JwtTokenUtil.getUserId(authentication));
+
 
             MemoResponse memoRes = MemoResponse.of(memoService.registerMemo(memoReq, user));
             return ResponseEntity.status(HttpStatus.OK).body(memoRes);
@@ -109,13 +109,13 @@ public class MemoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(BaseResponseBody.of(500, "서버 오류"));
         }
     }
-
     @GetMapping("/today")
     @ApiOperation(value = "오늘 메모 전부가져오기",notes = "오늘 날짜 메모만 전부 가져오기")
     public ResponseEntity<?> updateTodayMemo(@RequestHeader(JwtTokenUtil.HEADER_STRING) String authentication){
         try {
 
             User user = userService.getUserByUserId(JwtTokenUtil.getUserId(authentication));
+
 
             List<Memo> memoList = memoService.findMemoByDay(user);
             List<MemoResponse> memoResList = new ArrayList<>();
@@ -134,7 +134,6 @@ public class MemoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(BaseResponseBody.of(500, "서버 오류"));
         }
     }
-
 
 
 }

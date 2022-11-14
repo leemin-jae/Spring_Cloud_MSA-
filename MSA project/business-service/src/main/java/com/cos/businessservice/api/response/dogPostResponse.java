@@ -15,6 +15,7 @@ import java.sql.Timestamp;
 @ApiModel(value = "dogPostResponse")
 public class dogPostResponse {
 
+
     private int pk;
 
     @ApiModelProperty(name="NFT 해쉬코드", example="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN...")

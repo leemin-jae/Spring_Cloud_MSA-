@@ -17,6 +17,8 @@ public class WalkResponse {
 
     private double distance;
 
+    private String time;
+
     private int coin;
 
     @Column(columnDefinition = "LONGTEXT")
@@ -32,9 +34,9 @@ public class WalkResponse {
                 .coin(walk.getCoin())
                 .walkPath(walk.stringToLine())
                 .dogPkList(walk.pkToList())
+                .time(walk.toTime())
                 .build();
         return walkRes;
     }
-
 
 }

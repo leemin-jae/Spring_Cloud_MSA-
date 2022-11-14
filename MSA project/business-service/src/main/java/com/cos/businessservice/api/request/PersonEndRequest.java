@@ -11,6 +11,8 @@ import java.util.List;
 @ApiModel(value = "PersonEndRequest",description = "산책 종료")
 public class PersonEndRequest {
 
+    private long time;
+
     private int coin;
 
     private double distance;

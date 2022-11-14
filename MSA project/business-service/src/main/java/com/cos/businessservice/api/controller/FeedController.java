@@ -22,7 +22,7 @@ import java.util.List;
 @Api(value = "feed API" , tags = {"feed"})
 @Slf4j
 @RestController
-@RequestMapping("/api/feed")
+@RequestMapping("/feed")
 public class FeedController {
 
     @Autowired
@@ -33,8 +33,10 @@ public class FeedController {
 
     @PostMapping("")
     @ApiOperation(value = "피드 등록하기",notes = "ntf 발행된 해쉬와 사진 주소로  강아지별 피드 등록,",response = FeedPostResponse.class)
-    public ResponseEntity<?> registerFeed(@RequestHeader(JwtTokenUtil.HEADER_STRING) String authentication, @RequestBody FeedPostRequest feedReq){
+    public ResponseEntity<?> registerFeed(@RequestHeader(JwtTokenUtil.HEADER_STRING) String authentication
+            , @RequestBody FeedPostRequest feedReq){
         try {
+
             User user = userService.getUserByUserId(JwtTokenUtil.getUserId(authentication));
 
 
@@ -76,9 +78,11 @@ public class FeedController {
 
     @GetMapping("")
     @ApiOperation(value = "강아지 사진 모두 보기",notes = "본인 강아지 피드 확인하기",response = FeedPostResponse.class)
-    public ResponseEntity<?> getFeedList(@RequestHeader(JwtTokenUtil.HEADER_STRING) String authentication){
+    public ResponseEntity<?> getFeedList(@RequestHeader(JwtTokenUtil.HEADER_STRING) String authentication
+    ){
         try {
             User user = userService.getUserByUserId(JwtTokenUtil.getUserId(authentication));
+
             if (user == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(BaseResponseBody.of(400, "유저 없음"));
             }

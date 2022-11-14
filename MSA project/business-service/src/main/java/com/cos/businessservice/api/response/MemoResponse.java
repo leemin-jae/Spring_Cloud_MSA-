@@ -30,5 +30,4 @@ public class MemoResponse {
         return memoRes;
     }
 
-
 }

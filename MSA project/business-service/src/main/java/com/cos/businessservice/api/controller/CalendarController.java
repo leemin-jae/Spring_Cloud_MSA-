@@ -29,10 +29,11 @@ import java.util.List;
 @Api(value = "Calendar API" , tags = {"Calendar"})
 @Slf4j
 @RestController
-@RequestMapping("/api/calendar")
+@RequestMapping("/calendar")
 public class CalendarController {
     @Autowired
     UserService userService;
+
     @Autowired
     FeedService feedService;
 
@@ -44,9 +45,11 @@ public class CalendarController {
 
     @GetMapping("/feed")
     @ApiOperation(value = "캘린더 피드 리스트 읽기",notes = "년도, 달별에 포함되는 한달씩만 출력",response = FeedPostResponse.class)
-    public ResponseEntity<?> getCalenderFeedList(@RequestHeader(JwtTokenUtil.HEADER_STRING) String authentication, @RequestParam String year, @RequestParam String month){
+    public ResponseEntity<?> getCalenderFeedList(@RequestHeader(JwtTokenUtil.HEADER_STRING) String authentication
+            , @RequestParam String year, @RequestParam String month){
         try {
             User user = userService.getUserByUserId(JwtTokenUtil.getUserId(authentication));
+
 
             List<Feed> feedList = feedService.findFeedByDay(user,year,month);
 
@@ -74,10 +77,12 @@ public class CalendarController {
 
     @GetMapping("/memo")
     @ApiOperation(value = "캘린더 메모 리스트 읽기",notes = "년도, 달별에 포함되는 한달씩만 출력",response = MemoResponse.class)
-    public ResponseEntity<?> getCalenderMemoList(@RequestHeader(JwtTokenUtil.HEADER_STRING) String authentication, @RequestParam String year, @RequestParam String month){
+    public ResponseEntity<?> getCalenderMemoList(@RequestHeader(JwtTokenUtil.HEADER_STRING) String authentication
+            , @RequestParam String year, @RequestParam String month){
         try {
-
             User user = userService.getUserByUserId(JwtTokenUtil.getUserId(authentication));
+
+
 
             List<Memo> memoList = memoService.findMemoByMonth(user,year,month);
             List<List<MemoResponse>> memoResList = new ArrayList<>();
@@ -113,10 +118,21 @@ public class CalendarController {
 
     @GetMapping("/walk")
     @ApiOperation(value = "캘린더 산책 리스트 읽기",notes = "강아지 별 년도, 달별에 포함되는 한달씩만 출력",response = WalkResponse.class)
-    public ResponseEntity<?> getCalenderWalkList(@RequestHeader(JwtTokenUtil.HEADER_STRING) String authentication, @RequestParam String year, @RequestParam String month){
+    public ResponseEntity<?> getCalenderWalkList(@RequestHeader(JwtTokenUtil.HEADER_STRING) String authentication
+            , @RequestParam String year, @RequestParam String month){
         try {
 
             User user = userService.getUserByUserId(JwtTokenUtil.getUserId(authentication));
+
+
+
+//            List<Walk> memoList = walkService.findWalkByDay(user,year,month);
+//
+//            List<WalkResponse> walkResList = new ArrayList<>();
+//            for(Walk w : memoList){
+//                WalkResponse walkRes = WalkResponse.of(w);
+//                walkResList.add(walkRes);
+//            }
 
 
             List<Walk> walkList = walkService.findWalkByDay(user,year,month);
@@ -137,13 +153,16 @@ public class CalendarController {
                 return ResponseEntity.status(HttpStatus.OK).body(walkResList);
             }
         }catch (IllegalArgumentException e) {
-            e.getStackTrace();
+            for(StackTraceElement a : e.getStackTrace()){
+                log.info(a.toString());
+            }
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(BaseResponseBody.of(500, "올바르지 않은 인수 전달"));
         }catch (Exception e){
-            e.getStackTrace();
+            for(StackTraceElement a : e.getStackTrace()){
+                log.info(a.toString());
+            }
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(BaseResponseBody.of(500, "서버 오류"));
         }
     }
-
 
 }

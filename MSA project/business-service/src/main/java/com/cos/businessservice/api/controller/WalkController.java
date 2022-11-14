@@ -27,7 +27,7 @@ import java.util.List;
 @Api(value = "walk API" , tags = {"walk"})
 @Slf4j
 @RestController
-@RequestMapping("/api/walk")
+@RequestMapping("/walk")
 public class WalkController {
 
     @Autowired
@@ -49,7 +49,6 @@ public class WalkController {
 
 
             User user = userService.getUserByUserId(JwtTokenUtil.getUserId(authentication));
-
             String personId = walkService.startWalking(personReq, user);
 
             return ResponseEntity.status(HttpStatus.OK).body(personId);
@@ -96,7 +95,6 @@ public class WalkController {
         try {
 
             User user = userService.getUserByUserId(JwtTokenUtil.getUserId(authentication));
-
             if(walkService.endWalking(walkReq,user)){
                 return ResponseEntity.status(HttpStatus.OK).body(BaseResponseBody.of(200, "산책 종료 저장 성공"));
             }else{
@@ -114,7 +112,7 @@ public class WalkController {
 
 
     @GetMapping("/{walkPk}")
-    @ApiOperation(value = "강아지 사진 상세 보기",notes = "단건 조회",response = WalkResponse.class)
+    @ApiOperation(value = "산책 상세 보기",notes = "단건 조회",response = WalkResponse.class)
     public ResponseEntity<?> getWalk(@PathVariable int walkPk){
         try {
 
@@ -131,6 +129,9 @@ public class WalkController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(BaseResponseBody.of(500, "서버 오류"));
         }
     }
+
+
+
 
 
 

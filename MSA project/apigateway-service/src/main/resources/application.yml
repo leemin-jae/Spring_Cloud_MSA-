@@ -15,24 +15,48 @@ spring:
       - id: user-service
         uri: lb://USER-SERVICE
         predicates:
-          - Path=/user-service/**
-#          - Method=POST
+          - Path=/api/user-service/**
         filters:
           - RemoveRequestHeader=Cookie
-          - RewritePath=/user-service/(?<path>.*),/$\{path}
+          - RewritePath=/api/user-service/(?<path>.*),/$\{path}
+
       - id: business-service
         uri: lb://BUSINESS-SERVICE
         predicates:
-          - Path=/business-service/**
+          - Path=/business-service/actuator/**
         filters:
           - RemoveRequestHeader=Cookie
-          - RewritePath=/business-service/(?<path>.*),/$\{path}
+          - RewritePath=/api/business-service/(?<path>.*),/$\{path}
+
+#      - id: business-service
+#        uri: lb://BUSINESS-SERVICE
+#        predicates:
+#          - Path=/api/business-service/swagger-ui/**,/business-service/swagger-resources/**,/business-service/swagger-ui.html,/business-service/v2/api-docs,/business-service/webjars/**,/business-service/view/**
+#        filters:
+#          - RewritePath=/business-service/(?<path>.*),/$\{path}
+
+      - id: business-service
+        uri: lb://BUSINESS-SERVICE
+        predicates:
+          - Path=/api/business-service/**
+        filters:
+          - RemoveRequestHeader=Cookie
+          - RewritePath=/api/business-service/(?<path>.*),/$\{path}
           - AuthorizationHeaderFilter
 
 
-jwt:
-  secret: dyAeHubOOc8KaOfYB6XEQoEj1QzRlVgtjNL8PYs1A1tymZvvqkcEU7L1imkKHeDa
-  expiration: 1296000000
 
 
+
+
+
+
+#jwt:
+#  secret: dyAeHubOOc8KaOfYB6XEQoEj1QzRlVgtjNL8PYs1A1tymZvvqkcEU7L1imkKHeDa
+#  expiration: 1296000000
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, beans, httptrace
 

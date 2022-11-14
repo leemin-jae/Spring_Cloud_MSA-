@@ -28,6 +28,8 @@ public class Walk {
 
     private double distance;
 
+    private long time;
+
     private int coin;
 
     private String dogPkList;
@@ -60,5 +62,15 @@ public class Walk {
             result.add(Integer.parseInt(st.nextToken()));
         }
         return result;
+    }
+
+    public String toTime(){
+        long milliseconds = this.getTime();
+        long hours = (milliseconds / 1000) / 60 / 60 % 24;
+        long minutes = (milliseconds / 1000) / 60 % 60;
+        long seconds = (milliseconds / 1000) % 60;
+
+        String lt = String.format("%02d:%02d:%02d", hours, minutes, seconds);
+        return lt;
     }
 }

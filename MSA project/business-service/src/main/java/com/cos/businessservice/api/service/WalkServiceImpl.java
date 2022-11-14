@@ -91,7 +91,7 @@ public class WalkServiceImpl implements WalkService {
 
 
     @Override
-    public String startWalking(PersonRequest personReq, User user) {
+    public String startWalking(PersonRequest personReq,User user) {
         int lngArea = (int)((personReq.getLng() - STD_LNG)*1000);
         int latArea = (int)((personReq.getLat() - STD_LAT)*1000);
 
@@ -200,6 +200,7 @@ public class WalkServiceImpl implements WalkService {
         walk.setWalkPath(walkReq.lineToString());
         walk.setCoin(walkReq.getCoin());
         walk.setDistance(walkReq.getDistance());
+        walk.setTime(walkReq.getTime());
         walk.setUser(user);
         walkRepository.save(walk);
 
@@ -214,6 +215,7 @@ public class WalkServiceImpl implements WalkService {
 
     @Override
     public List<Walk> findWalkByDay(User user, String year, String month) {
+        log.info("walk 검색");
         return walkRepository.findWalkByDay(user.getPk(), year, month);
     }
 }
