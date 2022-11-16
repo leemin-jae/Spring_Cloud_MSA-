@@ -7,6 +7,7 @@ import com.cos.userservice.api.response.UserAddressResponse;
 import com.cos.userservice.api.response.UserResponse;
 import com.cos.userservice.api.service.UserService;
 import com.cos.userservice.common.auth.SsafyUserDetails;
+import com.cos.userservice.common.util.JwtTokenUtil;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,9 +32,8 @@ public class UserController {
 
     @GetMapping()
     @ApiOperation(value = "로그인 유저 정보 보기",notes = "지갑 주소나 강아지 정보같은 경우는 따로 api 호출",response = UserResponse.class)
-    public ResponseEntity<?> getUser(@ApiIgnore Authentication authentication){
-        SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
-        User user = userService.getUserByUserId(userDetails.getUsername());
+    public ResponseEntity<?> getUser(@RequestHeader(JwtTokenUtil.HEADER_STRING) String authentication){
+        User user = userService.getUserByUserId(JwtTokenUtil.getUserId(authentication));
 
         UserResponse userRes = UserResponse.builder()
                 .userId(user.getUserId())
@@ -49,10 +49,9 @@ public class UserController {
 
     @GetMapping("/wallet")
     @ApiOperation(value = "로그인 유저 지갑 주소 읽기",notes = "",response = UserAddressResponse.class)
-    public ResponseEntity<?> getWalletAddress(@ApiIgnore Authentication authentication){
+    public ResponseEntity<?> getWalletAddress(@RequestHeader(JwtTokenUtil.HEADER_STRING) String authentication){
 
-        SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
-        User user = userService.getUserByUserId(userDetails.getUsername());
+        User user = userService.getUserByUserId(JwtTokenUtil.getUserId(authentication));
 
         UserAddressResponse userAddressRes = UserAddressResponse.builder()
                 .userPk(user.getPk())
@@ -64,10 +63,9 @@ public class UserController {
 
     @PostMapping("/wallet")
     @ApiOperation(value = "로그인 유저 지갑 주소 등록",notes = "" ,response = UserAddressResponse.class)
-    public ResponseEntity<?> registerWalletAddress(@ApiIgnore Authentication authentication,@RequestBody UserAddressRequest userAdd){
+    public ResponseEntity<?> registerWalletAddress(@RequestHeader(JwtTokenUtil.HEADER_STRING) String authentication,@RequestBody UserAddressRequest userAdd){
 
-        SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
-        User user = userService.getUserByUserId(userDetails.getUsername());
+        User user = userService.getUserByUserId(JwtTokenUtil.getUserId(authentication));
 
 
         User userEntity = userService.registerAddress(user,userAdd);

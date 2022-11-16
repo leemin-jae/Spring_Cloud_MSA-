@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.*;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -41,6 +42,14 @@ public class JwtTokenUtil {
                 .require(Algorithm.HMAC512(secretKey.getBytes()))
                 .withIssuer(ISSUER)
                 .build();
+    }
+
+    public static String getUserId(String token){
+        JWTVerifier verifier = JwtTokenUtil.getVerifier();
+        JwtTokenUtil.handleError(token);
+        DecodedJWT decodedJWT = verifier.verify(token.replace(JwtTokenUtil.TOKEN_PREFIX, ""));
+        String userId = decodedJWT.getSubject();
+        return userId;
     }
     
     public static String getToken(String userId) {
